@@ -8,6 +8,7 @@ namespace Creator
     DesktopWinWindow::DesktopWinWindow(const WindowParameters &props) : m_isOpen(false), m_windowParameters(props), m_Direct3D(nullptr)
     {
         InitWindow();
+        m_isOpen = true;
     }
 
     DesktopWinWindow::~DesktopWinWindow()
@@ -17,13 +18,22 @@ namespace Creator
 
     void DesktopWinWindow::Update()
     {
-        if (m_Direct3D != nullptr)
+        if (m_isOpen)
         {
-            // Clear the buffers to begin the scene.
-            m_Direct3D->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
+            if (PeekMessage(&m_Msg, NULL, 0, 0, PM_REMOVE))
+            {
+                TranslateMessage(&m_Msg);
+                DispatchMessage(&m_Msg);
+            }
 
-            // Present the rendered scene to the screen.
-            m_Direct3D->EndScene();
+            if (m_Direct3D != nullptr)
+            {
+                // Clear the buffers to begin the scene.
+                m_Direct3D->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
+
+                // Present the rendered scene to the screen.
+                m_Direct3D->EndScene();
+            }
         }
     }
 
@@ -39,21 +49,16 @@ namespace Creator
 
     void DesktopWinWindow::InitWindow()
     {
-        // InitializeWindows(m_windowParameters.Width, m_windowParameters.Height);
+        ZeroMemory(&m_Msg, sizeof(MSG));
+
         WNDCLASSEX wc;
         DEVMODE dmScreenSettings;
         int posX, posY;
 
-        // Get an external pointer to this object.
-        // ApplicationHandle = this;
-
-        // Get the instance of this application.
         m_hInstance = GetModuleHandle(NULL);
 
-        // Give the application a name.
-        m_applicationName = "Engine";
+        m_applicationName = m_windowParameters.DisplayTitle.c_str();
 
-        // Setup the windows class with default settings.
         wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
         wc.lpfnWndProc = DesktopWinWindow::MessageHandler;
         wc.cbClsExtra = 0;
@@ -71,9 +76,8 @@ namespace Creator
 
         int screenWidth = GetSystemMetrics(SM_CXSCREEN);
         int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-        bool FULL_SCREEN = false;
 
-        if (FULL_SCREEN)
+        if (m_windowParameters.Fullscreen)
         {
             memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
             dmScreenSettings.dmSize = sizeof(dmScreenSettings);
@@ -104,8 +108,7 @@ namespace Creator
         SetForegroundWindow(m_hWnd);
         SetFocus(m_hWnd);
 
-        // Hide the mouse cursor.
-        ShowCursor(false);
+        ShowCursor(true);
 
         m_Direct3D = new D3DContainer();
         m_Direct3D->Initialize(m_windowParameters.Width, m_windowParameters.Height, false, m_hWnd, false, 1000.f, 0.1f);
@@ -155,11 +158,22 @@ namespace Creator
         {
         case WM_KEYDOWN:
         {
+            KeyboardKeyDown keyDown((unsigned int)wparam);
+            DesktopWinWindow::m_callback(keyDown);
+            return 0;
+        }
+
+        case WM_CLOSE:
+        {
+            WindowCloseEvent closeEvent;
+            DesktopWinWindow::m_callback(closeEvent);
             return 0;
         }
 
         case WM_KEYUP:
         {
+            KeyboardKeyUp keyUp((unsigned int)wparam);
+            DesktopWinWindow::m_callback(keyUp);
             return 0;
         }
 

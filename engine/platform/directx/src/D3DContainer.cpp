@@ -24,7 +24,7 @@ namespace Creator
     {
     }
 
-    bool D3DContainer::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear)
+    bool D3DContainer::Initialize(HWND hwnd, WindowParameters parameters, float screenDepth, float screenNear)
     {
         HRESULT result;
         IDXGIFactory *factory;
@@ -45,7 +45,7 @@ namespace Creator
         float fieldOfView, screenAspect;
 
         // Store the vsync setting.
-        m_vsync_enabled = vsync;
+        m_vsync_enabled = parameters.VSyncEnabled;
 
         // Create a DirectX graphics interface factory.
         result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void **)&factory);
@@ -93,9 +93,9 @@ namespace Creator
         // When a match is found store the numerator and denominator of the refresh rate for that monitor.
         for (i = 0; i < numModes; i++)
         {
-            if (displayModeList[i].Width == (unsigned int)screenWidth)
+            if (displayModeList[i].Width == (unsigned int)parameters.Width)
             {
-                if (displayModeList[i].Height == (unsigned int)screenHeight)
+                if (displayModeList[i].Height == (unsigned int)parameters.Height)
                 {
                     numerator = displayModeList[i].RefreshRate.Numerator;
                     denominator = displayModeList[i].RefreshRate.Denominator;
@@ -143,8 +143,8 @@ namespace Creator
         swapChainDesc.BufferCount = 1;
 
         // Set the width and height of the back buffer.
-        swapChainDesc.BufferDesc.Width = screenWidth;
-        swapChainDesc.BufferDesc.Height = screenHeight;
+        swapChainDesc.BufferDesc.Width = parameters.Width;
+        swapChainDesc.BufferDesc.Height = parameters.Height;
 
         // Set regular 32-bit surface for the back buffer.
         swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -172,14 +172,7 @@ namespace Creator
         swapChainDesc.SampleDesc.Quality = 0;
 
         // Set to full screen or windowed mode.
-        if (fullscreen)
-        {
-            swapChainDesc.Windowed = false;
-        }
-        else
-        {
-            swapChainDesc.Windowed = true;
-        }
+        swapChainDesc.Windowed = !parameters.Fullscreen;
 
         // Set the scan line ordering and scaling to unspecified.
         swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
@@ -222,8 +215,8 @@ namespace Creator
         ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
         // Set up the description of the depth buffer.
-        depthBufferDesc.Width = screenWidth;
-        depthBufferDesc.Height = screenHeight;
+        depthBufferDesc.Width = parameters.Width;
+        depthBufferDesc.Height = parameters.Height;
         depthBufferDesc.MipLevels = 1;
         depthBufferDesc.ArraySize = 1;
         depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -308,8 +301,8 @@ namespace Creator
         // Now set the rasterizer state.
         m_deviceContext->RSSetState(m_rasterState);
         // Setup the viewport for rendering.
-        m_viewport.Width = (float)screenWidth;
-        m_viewport.Height = (float)screenHeight;
+        m_viewport.Width = (float)parameters.Width;
+        m_viewport.Height = (float)parameters.Height;
         m_viewport.MinDepth = 0.0f;
         m_viewport.MaxDepth = 1.0f;
         m_viewport.TopLeftX = 0.0f;
@@ -319,14 +312,14 @@ namespace Creator
         m_deviceContext->RSSetViewports(1, &m_viewport);
         // Setup the projection matrix.
         fieldOfView = 3.141592654f / 4.0f;
-        screenAspect = (float)screenWidth / (float)screenHeight;
+        screenAspect = (float)parameters.Width / (float)parameters.Height;
 
         // Create the projection matrix for 3D rendering.
         m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
         // Initialize the world matrix to the identity matrix.
         m_worldMatrix = XMMatrixIdentity();
         // Create an orthographic projection matrix for 2D rendering.
-        m_orthoMatrix = XMMatrixOrthographicLH((float)screenWidth, (float)screenHeight, screenNear, screenDepth);
+        m_orthoMatrix = XMMatrixOrthographicLH((float)parameters.Width, (float)parameters.Height, screenNear, screenDepth);
 
         return true;
     }

@@ -28,7 +28,11 @@ namespace Creator
 
         bool m_isOpen;
 
+        inline static EventCallbackFn m_callback;
+
     public:
+        inline void SetEventCallback(const EventCallbackFn &callback) override { DesktopWinWindow::m_callback = callback; }
+
         static LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
 
     private:
@@ -39,7 +43,8 @@ namespace Creator
         HWND m_hWnd;
         HINSTANCE m_hInstance;
         LPCSTR m_applicationName;
+        MSG m_Msg;
 
-        class D3DContainer* m_Direct3D;
+        class D3DContainer *m_Direct3D;
     };
 }

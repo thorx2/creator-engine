@@ -1,5 +1,6 @@
 #pragma once
 
+#include "include/Window.h"
 #include <d3d11.h>
 #include <directxmath.h>
 
@@ -12,7 +13,7 @@ namespace Creator
         D3DContainer(const D3DContainer &);
         ~D3DContainer();
 
-        bool Initialize(int, int, bool, HWND, bool, float, float);
+        bool Initialize(HWND, WindowParameters, float, float);
         void Shutdown();
 
         void BeginScene(float, float, float, float);
