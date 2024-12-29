@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "include/OpenGlWindow.h"
 
+#if defined(OPEN_GL)
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -109,3 +110,5 @@ namespace Creator
         m_window = nullptr;
     }
 }
+
+#endif
