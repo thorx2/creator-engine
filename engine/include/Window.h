@@ -10,10 +10,14 @@ namespace Creator
         std::string DisplayTitle;
         uint32_t Width;
         uint32_t Height;
+        bool Fullscreen;
+        bool VSyncEnabled;
         WindowParameters(const std::string &title = "Base Window",
                          uint32_t width = 1600,
-                         uint32_t height = 900)
-            : DisplayTitle(title), Width(width), Height(height) {}
+                         uint32_t height = 900,
+                         bool fullscreen = false,
+                         bool vSyncEnabled = false)
+            : DisplayTitle(title), Width(width), Height(height), Fullscreen(fullscreen), VSyncEnabled(vSyncEnabled) {}
     };
 
     class Window
