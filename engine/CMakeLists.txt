@@ -1,8 +1,6 @@
 # Fetch spdlog using CMake's FetchContent
 include(FetchContent)
 
-set(USE_DIRECTX OFF)
-
 # Create a library target
 add_library(Engine STATIC
     pch.cpp
