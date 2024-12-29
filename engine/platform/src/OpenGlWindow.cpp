@@ -59,6 +59,7 @@ namespace Creator
             return;
         }
         glfwMakeContextCurrent(m_window);
+        glfwSetWindowUserPointer(m_window, &m_Data);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
@@ -70,6 +71,32 @@ namespace Creator
             return;
         }
         m_isOpen = true;
+
+        glfwSetKeyCallback(m_window,
+                           [](GLFWwindow *window, int key, int scancode, int action, int mods)
+                           {
+                               switch (action)
+                               {
+                               case GLFW_PRESS:
+                               {
+                                   KeyboardKeyDown keyDown(key);
+                                   OpenGLMetaData &openWin = *(OpenGLMetaData *)(glfwGetWindowUserPointer(window));
+                                   openWin.CallbackFunction(keyDown);
+                               }
+                               break;
+                               case GLFW_RELEASE:
+                               {
+                                   KeyboardKeyUp keyUp(key);
+                               }
+                               break;
+                               }
+                           });
+
+        glfwSetWindowCloseCallback(m_window, [](GLFWwindow *window)
+                                   {
+            OpenGLMetaData& data = *(OpenGLMetaData*)glfwGetWindowUserPointer(window);
+			WindowCloseEvent eve;
+            data.CallbackFunction(eve); });
     }
 
     void OpenGlWindow::CleanUp()

@@ -13,5 +13,6 @@
 //Game Library includes
 #include "include/Log.h"
 #include "include/Event.h"
+#include "include/EventDispatcher.h"
 #include "include/KeyboardEvent.h"
 #include "include/WindowEvent.h"

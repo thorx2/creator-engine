@@ -19,13 +19,14 @@ namespace Creator
     class Window
     {
     public:
-        // using EventCallbackFn = std::function<void(Event &)>;
+        using EventCallbackFn = std::function<void(Event &)>;
 
         virtual ~Window() = default;
 
         virtual void Update() = 0;
 
         virtual bool IsOpen() const = 0;
+        virtual void SetEventCallback(const EventCallbackFn &callback) = 0;
 
         virtual uint32_t GetWidth() const = 0;
         virtual uint32_t GetHeight() const = 0;
