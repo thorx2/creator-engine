@@ -1,7 +1,10 @@
+#include "pch.h"
+
+#if defined(DXD_RENDERING)
 #include "include/DesktopWinWindow.h"
+#include "directx/include/D3DContainer.h"
 #include <d3dcommon.h>
 #include <Windows.h>
-#include "directx/include/D3DContainer.h"
 
 namespace Creator
 {
@@ -110,8 +113,8 @@ namespace Creator
 
         ShowCursor(true);
 
-        m_Direct3D = new D3DContainer();
-        m_Direct3D->Initialize(m_windowParameters.Width, m_windowParameters.Height, false, m_hWnd, false, 1000.f, 0.1f);
+        m_Direct3D = std::make_shared<D3DContainer>();
+        m_Direct3D->Initialize(m_hWnd, m_windowParameters, 1000.f, 0.1f);
     }
 
     void DesktopWinWindow::CleanUp()
@@ -140,8 +143,6 @@ namespace Creator
         if (m_Direct3D != nullptr)
         {
             m_Direct3D->Shutdown();
-            delete m_Direct3D;
-            m_Direct3D = nullptr;
         }
 
         return;
@@ -184,3 +185,5 @@ namespace Creator
         }
     }
 }
+
+#endif // DXD_RENDERING

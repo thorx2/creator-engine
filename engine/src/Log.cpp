@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "include/Log.h"
+
 namespace Creator
 {
     std::shared_ptr<spdlog::logger> Log::s_CoreLogger;

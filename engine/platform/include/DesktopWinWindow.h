@@ -1,12 +1,21 @@
 #pragma once
 
 #include "include/Window.h"
+#include <memory>
 
+//TODO Hide this only for windows
 #include <windows.h>
-#include <d3d11.h>
 
 namespace Creator
 {
+    // Forward declarations
+    // struct RECT;
+    // typedef void *HWND;
+    // typedef void *HINSTANCE;
+    // typedef const char *LPCSTR;
+    // struct MSG;
+    // typedef long LRESULT;
+
     class DesktopWinWindow : public Window
     {
     public:
@@ -32,12 +41,10 @@ namespace Creator
 
     public:
         inline void SetEventCallback(const EventCallbackFn &callback) override { DesktopWinWindow::m_callback = callback; }
-
         static LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
 
     private:
         bool InitDirectX();
-        void Render();
 
         RECT m_rc;
         HWND m_hWnd;
@@ -45,6 +52,6 @@ namespace Creator
         LPCSTR m_applicationName;
         MSG m_Msg;
 
-        class D3DContainer *m_Direct3D;
+        std::shared_ptr<class D3DContainer> m_Direct3D;
     };
 }

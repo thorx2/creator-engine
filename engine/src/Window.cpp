@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "include/Window.h"
 
-#if defined(OPEN_GL)
+#if defined(OPEN_GL_RENDERING)
 #include "include/OpenGlWindow.h"
-#else
+#elif defined(DXD_RENDERING)
 #include "include/DesktopWinWindow.h"
 #endif
 
@@ -11,9 +11,9 @@ namespace Creator
 {
     Window *Window::Create(const WindowParameters &props)
     {
-#if defined(OPEN_GL)
+#if defined(OPEN_GL_RENDERING)
         return new OpenGlWindow(props);
-#else
+#elif defined(DXD_RENDERING)
         return new DesktopWinWindow(props);
 #endif
     }

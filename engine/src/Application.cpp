@@ -2,6 +2,8 @@
 
 #include "include/Application.h"
 #include "include/Window.h"
+#include "include/WindowEvent.h"
+#include "include/EventDispatcher.h"
 
 namespace Creator
 {

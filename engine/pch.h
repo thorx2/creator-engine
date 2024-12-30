@@ -4,15 +4,11 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <functional>
+#include <sstream>
+#include <chrono>
 
 /// Third party lib includes
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
-
-//Game Library includes
-#include "include/Log.h"
-#include "include/Event.h"
-#include "include/EventDispatcher.h"
-#include "include/KeyboardEvent.h"
-#include "include/WindowEvent.h"

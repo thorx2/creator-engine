@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 project(MyGameProject)
 
-set(USE_DIRECTX ON)
+set(USE_DIRECTX OFF)
+set(USE_VULCAN OFF)
 
 
 # Set C++ standard

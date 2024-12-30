@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Event.h"
 #include <memory>
+
 namespace Creator
 {
     class Window;
+    class Event;
+    class WindowCloseEvent;
 
     class Application
     {

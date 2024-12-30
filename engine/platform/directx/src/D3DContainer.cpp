@@ -1,4 +1,9 @@
+#include "pch.h"
+
+#if defined(DXD_RENDERING)
 #include "directx/include/D3DContainer.h"
+
+#include <directxmath.h>
 
 using namespace DirectX;
 
@@ -471,3 +476,5 @@ namespace Creator
     }
 
 }
+
+#endif

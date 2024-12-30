@@ -1,8 +1,9 @@
 #pragma once
 
 #include "include/Window.h"
+
+//TODO Show this only for windows
 #include <d3d11.h>
-#include <directxmath.h>
 
 namespace Creator
 {

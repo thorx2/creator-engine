@@ -7,6 +7,8 @@ add_library(Engine STATIC
     src/Application.cpp
     src/Log.cpp
     src/Window.cpp
+    src/Layer.cpp
+    src/LayerManager.cpp
     platform/src/DesktopWinWindow.cpp
     platform/src/OpenGlWindow.cpp
     platform/directx/src/D3DContainer.cpp
@@ -41,8 +43,11 @@ target_precompile_headers(Engine PRIVATE pch.h)
 
 if(USE_DIRECTX)
 target_link_libraries(Engine PRIVATE d3d11.lib dxgi.lib d3dcompiler.lib)
+target_compile_definitions(Engine PRIVATE DXD_RENDERING)
+elseif(USE_VULCAN)
+target_compile_definitions(Engine PRIVATE VULCAN_RENDERING)
 else()
-target_compile_definitions(Engine PRIVATE OPEN_GL)
+target_compile_definitions(Engine PRIVATE OPEN_GL_RENDERING)
 target_link_libraries(Engine PRIVATE glfw opengl32)
 endif()
 

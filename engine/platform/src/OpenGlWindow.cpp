@@ -1,9 +1,13 @@
 #include "pch.h"
-#include "include/OpenGlWindow.h"
 
-#if defined(OPEN_GL)
+#if defined(OPEN_GL_RENDERING)
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "include/OpenGlWindow.h"
+#include "include/Event.h"
+#include "include/WindowEvent.h"
+#include "include/KeyboardEvent.h"
 
 namespace Creator
 {
