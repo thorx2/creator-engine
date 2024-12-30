@@ -4,6 +4,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+
 #include "include/OpenGlWindow.h"
 #include "include/Event.h"
 #include "include/WindowEvent.h"
@@ -11,6 +15,8 @@
 
 namespace Creator
 {
+    ImVec4 clear_color = ImVec4(0.f, 0.f, 0.f, 1.00f);
+
     OpenGlWindow::OpenGlWindow(const WindowParameters &props) : m_window(nullptr), m_windowParameters(props), m_isOpen(false)
     {
         InitWindow();
@@ -25,9 +31,15 @@ namespace Creator
     {
         while (m_window != nullptr && !glfwWindowShouldClose(m_window))
         {
-            glClear(GL_COLOR_BUFFER_BIT);
-            glfwSwapBuffers(m_window);
             glfwPollEvents();
+
+            glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+            glfwSwapBuffers(m_window);
             return;
         }
 
@@ -64,6 +76,10 @@ namespace Creator
             return;
         }
         glfwMakeContextCurrent(m_window);
+        if (m_windowParameters.VSyncEnabled)
+        {
+            glfwSwapInterval(1);
+        }
         glfwSetWindowUserPointer(m_window, &m_Data);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))

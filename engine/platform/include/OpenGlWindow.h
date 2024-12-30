@@ -20,6 +20,8 @@ namespace Creator
 
         inline void SetEventCallback(const EventCallbackFn &callback) override { m_Data.CallbackFunction = callback; }
 
+        void *GetNativeWindow() override { return m_window; }
+
     private:
         WindowParameters m_windowParameters;
 

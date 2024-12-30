@@ -7,6 +7,7 @@
 #include <functional>
 #include <sstream>
 #include <chrono>
+#include <tchar.h>
 
 /// Third party lib includes
 #include "spdlog/spdlog.h"

@@ -36,6 +36,8 @@ namespace Creator
         virtual uint32_t GetHeight() const = 0;
 
         static Window *Create(const WindowParameters &props = WindowParameters());
+
+        virtual void *GetNativeWindow() { return this; }
     };
 
 }

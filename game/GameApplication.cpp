@@ -3,11 +3,14 @@
 
 #include "CoreEntry.h"
 
+#include "Layers/DebugUiLayer.h"
+
 class GameApplication : public Creator::Application
 {
 public:
     GameApplication()
     {
+        PushLayer(new OverWorld::DebugUiLayer());
     }
 
     ~GameApplication()

@@ -2,10 +2,13 @@
 
 #include "include/LayerManager.h"
 #include "include/Layer.h"
+#include "include/Event.h"
+#include "include/time/CreatorTime.h"
+#include <GLFW/glfw3.h>
 
 namespace Creator
 {
-    LayerManager::LayerManager()
+    LayerManager::LayerManager() : m_LastFrameTime(0)
     {
         m_CurrentLayerIndex = 0;
     }
@@ -15,6 +18,29 @@ namespace Creator
         for (Layer *layer : m_Layers)
         {
             delete layer;
+        }
+    }
+
+    void LayerManager::Update()
+    {
+        float time = glfwGetTime(); // CreatorTime::GetTime();
+        CreatorTimer timestep = time - m_LastFrameTime;
+        m_LastFrameTime = time;
+        for (Layer *layer : m_Layers)
+        {
+            layer->Update(timestep);
+        }
+    }
+
+    void LayerManager::OnEvent(Event &event)
+    {
+        for (auto it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
+        {
+            (*it)->OnEvent(event);
+            if (event.Handled)
+            {
+                break;
+            }
         }
     }
 
