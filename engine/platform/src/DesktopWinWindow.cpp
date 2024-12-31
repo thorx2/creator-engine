@@ -12,6 +12,8 @@
 #include <d3dcommon.h>
 #include <Windows.h>
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);     
+
 namespace Creator
 {
     DesktopWinWindow::DesktopWinWindow(const WindowParameters &props) : m_isOpen(false), m_windowParameters(props), m_Direct3D(nullptr)
@@ -110,7 +112,7 @@ namespace Creator
 
         // Create the window with the screen settings and get the handle to it.
         m_hWnd = CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName,
-                                WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+                                WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP | WS_CAPTION | WS_SYSMENU,
                                 posX, posY, screenWidth, screenHeight, NULL, NULL, m_hInstance, NULL);
 
         // Bring the window up on the screen and set it as main focus.
@@ -163,6 +165,9 @@ namespace Creator
 
     LRESULT CALLBACK DesktopWinWindow::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
     {
+        if (ImGui_ImplWin32_WndProcHandler(hwnd, umsg, wparam, lparam))
+            return true;
+
         switch (umsg)
         {
         case WM_KEYDOWN:
