@@ -33,8 +33,15 @@ namespace OverWorld
 
     void DebugUiLayer::Update(Creator::CreatorTimer time)
     {
-        ImGuiIO &io = ImGui::GetIO();
+        Creator::Application app = Creator::Application::Get();
+
         __IM_GUI_FRAME_INIT__
+
+        ImGuiIO &io = ImGui::GetIO();
+        int windowWidth = app.GetWindow()->GetWidth();
+        int windowHeight = app.GetWindow()->GetHeight();
+        io.DisplaySize = ImVec2((float)windowWidth, (float)windowHeight);
+
         ImGui::NewFrame();
 
         // Custom frame stuff
