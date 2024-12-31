@@ -4,7 +4,13 @@
 #include "include/Layer.h"
 #include "include/Event.h"
 #include "include/time/CreatorTime.h"
+
+#if defined(DXD_RENDERING)
+#define GET_PROCESS_TIME 0.f
+#elif defined(OPEN_GL_RENDERING)
 #include <GLFW/glfw3.h>
+#define GET_PROCESS_TIME glfwGetTime()
+#endif
 
 namespace Creator
 {
@@ -23,7 +29,7 @@ namespace Creator
 
     void LayerManager::Update()
     {
-        float time = glfwGetTime(); // CreatorTime::GetTime();
+        float time = GET_PROCESS_TIME; // CreatorTime::GetTime();
         CreatorTimer timestep = time - m_LastFrameTime;
         m_LastFrameTime = time;
         for (Layer *layer : m_Layers)

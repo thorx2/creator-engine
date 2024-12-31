@@ -2,7 +2,13 @@
 
 #if defined(DXD_RENDERING)
 #include "include/DesktopWinWindow.h"
+#include "include/Event.h"
+#include "include/WindowEvent.h"
+#include "include/KeyboardEvent.h"
 #include "directx/include/D3DContainer.h"
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
 #include <d3dcommon.h>
 #include <Windows.h>
 
@@ -31,9 +37,10 @@ namespace Creator
 
             if (m_Direct3D != nullptr)
             {
+                ImGui::Render();
                 // Clear the buffers to begin the scene.
-                m_Direct3D->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
-
+                m_Direct3D->BeginScene(0.2f, 0.2f, 0.2f, 1.0f, m_windowParameters.Width, m_windowParameters.Height);
+                ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
                 // Present the rendered scene to the screen.
                 m_Direct3D->EndScene();
             }
@@ -108,6 +115,7 @@ namespace Creator
 
         // Bring the window up on the screen and set it as main focus.
         ShowWindow(m_hWnd, SW_SHOW);
+        UpdateWindow(m_hWnd);
         SetForegroundWindow(m_hWnd);
         SetFocus(m_hWnd);
 

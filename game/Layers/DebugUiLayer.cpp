@@ -8,9 +8,15 @@
 #include "imgui_internal.h"
 
 #if defined(DXD_RENDERING)
+#define __IM_GUI_FRAME_INIT__   \
+    ImGui_ImplWin32_NewFrame(); \
+    ImGui_ImplDX11_NewFrame();
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx11.h"
 #elif defined(OPEN_GL_RENDERING)
+#define __IM_GUI_FRAME_INIT__     \
+    ImGui_ImplOpenGL3_NewFrame(); \
+    ImGui_ImplGlfw_NewFrame();
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #endif
@@ -28,9 +34,7 @@ namespace OverWorld
     void DebugUiLayer::Update(Creator::CreatorTimer time)
     {
         ImGuiIO &io = ImGui::GetIO();
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
+        __IM_GUI_FRAME_INIT__
         ImGui::NewFrame();
 
         // Custom frame stuff

@@ -2,9 +2,9 @@
 
 #include "include/Window.h"
 
-//TODO Show this only for windows
+// TODO Show this only for windows
 #include <d3d11.h>
-
+#include <DirectXMath.h>
 namespace Creator
 {
     class D3DContainer
@@ -17,7 +17,7 @@ namespace Creator
         bool Initialize(HWND, WindowParameters, float, float);
         void Shutdown();
 
-        void BeginScene(float, float, float, float);
+        void BeginScene(float, float, float, float, float, float);
         void EndScene();
 
         ID3D11Device *GetDevice();

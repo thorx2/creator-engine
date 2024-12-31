@@ -3,7 +3,7 @@
 #include "include/Window.h"
 #include <memory>
 
-//TODO Hide this only for windows
+// TODO Hide this only for windows
 #include <windows.h>
 
 namespace Creator
@@ -15,6 +15,8 @@ namespace Creator
     // typedef const char *LPCSTR;
     // struct MSG;
     // typedef long LRESULT;
+
+    class D3DContainer;
 
     class DesktopWinWindow : public Window
     {
@@ -28,6 +30,8 @@ namespace Creator
         uint32_t GetHeight() const;
 
         bool IsOpen() const { return m_isOpen; }
+
+        void *GetNativeWindow() override { return &m_hWnd; }
 
     private:
         WindowParameters m_windowParameters;
@@ -43,6 +47,8 @@ namespace Creator
         inline void SetEventCallback(const EventCallbackFn &callback) override { DesktopWinWindow::m_callback = callback; }
         static LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
 
+        std::weak_ptr<D3DContainer> GetD3DContainer() { return std::weak_ptr<D3DContainer>(m_Direct3D); }
+
     private:
         bool InitDirectX();
 
@@ -52,6 +58,6 @@ namespace Creator
         LPCSTR m_applicationName;
         MSG m_Msg;
 
-        std::shared_ptr<class D3DContainer> m_Direct3D;
+        std::shared_ptr<D3DContainer> m_Direct3D;
     };
 }

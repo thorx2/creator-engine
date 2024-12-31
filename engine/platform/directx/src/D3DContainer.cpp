@@ -329,8 +329,9 @@ namespace Creator
         return true;
     }
 
-    void D3DContainer::BeginScene(float red, float green, float blue, float alpha)
+    void D3DContainer::BeginScene(float red, float green, float blue, float alpha, float width, float height)
     {
+        m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
         float color[4];
 
         // Setup the color to clear the buffer to.
@@ -340,6 +341,7 @@ namespace Creator
         color[3] = alpha;
 
         // Clear the back buffer.
+        m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, nullptr);
         m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
 
         // Clear the depth buffer.
@@ -361,8 +363,6 @@ namespace Creator
             // Present as fast as possible.
             m_swapChain->Present(0, 0);
         }
-
-        return;
     }
 
     void D3DContainer::Shutdown()

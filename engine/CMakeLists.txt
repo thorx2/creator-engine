@@ -43,8 +43,9 @@ target_include_directories(Engine PRIVATE platform thirdparty/GLAD/include third
 target_precompile_headers(Engine PRIVATE pch.h)
 
 if(USE_DIRECTX)
-target_sources(Engine
+target_sources(Engine PRIVATE
     thirdparty/imgui/backends/imgui_impl_dx11.cpp
+    thirdparty/imgui/backends/imgui_impl_win32.cpp
 )
 target_link_libraries(Engine PRIVATE d3d11.lib dxgi.lib d3dcompiler.lib)
 target_compile_definitions(Engine PRIVATE DXD_RENDERING)
