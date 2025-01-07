@@ -9,6 +9,7 @@ add_library(Engine STATIC
     src/Window.cpp
     src/Layer.cpp
     src/LayerManager.cpp
+    src/UiPanels/SplashLayer.cpp
     platform/src/DesktopWinWindow.cpp
     platform/src/OpenGlWindow.cpp
     platform/directx/src/D3DContainer.cpp

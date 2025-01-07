@@ -10,7 +10,7 @@ class GameApplication : public Creator::Application
 public:
     GameApplication()
     {
-        PushLayer(new OverWorld::DebugUiLayer());
+        PushOverlay(new OverWorld::DebugUiLayer());
     }
 
     ~GameApplication()

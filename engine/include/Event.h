@@ -1,6 +1,6 @@
 #pragma once
 
-#define BIT_MASK(x) 1 << x
+#include"CoreMacros.h"
 
 namespace Creator
 {

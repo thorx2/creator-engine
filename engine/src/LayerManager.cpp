@@ -4,14 +4,9 @@
 #include "include/Layer.h"
 #include "include/Event.h"
 #include "include/time/CreatorTime.h"
-
-#if defined(DXD_RENDERING)
-#define GET_PROCESS_TIME 0.f
-#elif defined(OPEN_GL_RENDERING)
+#if defined(OPEN_GL_RENDERING)
 #include <GLFW/glfw3.h>
-#define GET_PROCESS_TIME glfwGetTime()
 #endif
-
 namespace Creator
 {
     LayerManager::LayerManager() : m_LastFrameTime(0)
